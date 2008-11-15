@@ -76,7 +76,7 @@ module ReverbNationTags
     location
   end
   
-  Time::DATE_FORMATS[:show_date] = '%b %d'
+  Time::DATE_FORMATS[:show_date] = '%b %e'
   Time::DATE_FORMATS[:show_time] = '%I:%M %p'
 
   ['date', 'time'].each do |tagname, format|
