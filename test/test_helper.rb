@@ -29,6 +29,7 @@ require 'context'
 require 'stump'
 
 # override stump's proxy code to account for optional parameters
+# TODO: submit a patch
 
 class Object
   def proxy_existing_method(method, options = {}, &block)
