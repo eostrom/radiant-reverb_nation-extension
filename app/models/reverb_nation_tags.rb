@@ -9,7 +9,10 @@ module ReverbNationTags
 
   tag 'reverbnation' do |tag|
     tag.locals.artist = tag.attr['artist']
-    return 'No artist specified for ReverbNation' if tag.locals.artist.blank?
+    if tag.locals.artist.blank?
+      raise ArgumentError, 'No artist specified for ReverbNation'
+    end
+    tag.locals.country = tag.attr['country']
     tag.locals.feed = open(SHOWS_FEED + tag.locals.artist) {|f| f.read}
     tag.locals.xml = Nokogiri::XML(tag.locals.feed)
     
@@ -17,18 +20,21 @@ module ReverbNationTags
   end
   
   {
-    'artist' => 'artist_name',
+    'name' => 'artist_name',
     'genres' => 'genres',
-    'location' => 'location',
     'members' => 'band_members',
     'label' => 'label',
     'link' => 'link',
-    'brand' => 'description'
+    'branding' => 'description'
   }.each do |tagname, rssname|
     tag "reverbnation:#{tagname}" do |tag|
-      # Won't work, RSS parser strips RN-specific data.
       tag.locals.xml.xpath("//channel/#{rssname}").first.inner_html
     end
+  end
+  
+  tag 'reverbnation:location' do |tag|
+    location = tag.locals.xml.xpath("//channel/location").first.inner_html
+    location.sub(/, #{tag.locals.country}$/, '')
   end
   
   tag 'reverbnation:shows' do |tag|
@@ -51,8 +57,8 @@ module ReverbNationTags
   {
     'link' => 'link', # currently useless - keep hope alive!
 
-    'price' => 'ticket_price',
-    'tickets_link' => 'tickets_url',
+    'ticket_price' => 'ticket_price',
+    'ticket_link' => 'tickets_url',
 
     'venue' => 'venue',
     'address' => 'address',
@@ -69,7 +75,7 @@ module ReverbNationTags
   
   tag "reverbnation:shows:each:location" do |tag|
     location = tag.locals.item.xpath('loc').first.inner_html
-    country = tag.attr['country']
+    country = tag.locals.country
     if country
       location.sub!(/ #{country}$/, '').sub!(/, *$/, '')
     end
