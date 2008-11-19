@@ -60,27 +60,27 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
-    # At the moment, we're testing against the live server, and so we don't
-    # know what shows are going to be there.  The expected values in most of
-    # these tests just serve to assert that the tags actually render.
     {
-      'link' => /http:\/\/www.reverbnation.com\//,
-      'date' => //,
-      'time' => //,
-      'ticket_price' => //,
-      'ticket_link' => //,
-      'venue' => //,
-      'location' => //,
-      'address' => //,
-      'latitude' => //,
-      'longitude' => //,
-      'note' => //
+      'link' => "http://www.reverbnation.com/tincat\n" * 2,
+      'date' => "Nov 15\nDec  3\n",
+      'time' => " 7:30 PM\n 7:30 PM\n",
+      'ticket_price' => "$3\nfree\n",
+      'ticket_link' => "http://brownpapertickets.com/\n\n",
+      'venue' => "Blue Rock Shoot\nWine Affairs\n",
+      'location' => "Saratoga, CA US\nSan Jose, CA US\n",
+      'address' => [
+        "14523 Big Basin Way, Saratoga, CA, 95070, US\n" +
+        "1435 The Alameda, San Jose, CA, 95126, US\n"
+      ].join,
+      'latitude' => "37.2570076\n37.3332558\n",
+      'longitude' => "-122.0343704\n-121.9144745\n",
+      'note' => "A note.\n\n"
     }.each do |tag, value|
       context "a reverbnation:shows:each:#{tag} tag" do
         it "renders the show's #{tag}" do
           tags = [
             "<r:reverbnation artist='tincat'>",
-            "<r:shows:each:#{tag} />",
+            "<r:shows:each><r:#{tag} />\n</r:shows:each>",
             "</r:reverbnation>"
           ].join
 

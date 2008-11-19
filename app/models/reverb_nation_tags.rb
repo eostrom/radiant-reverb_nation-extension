@@ -87,7 +87,7 @@ module ReverbNationTags
   end
   
   Time::DATE_FORMATS[:show_date] = '%b %e'
-  Time::DATE_FORMATS[:show_time] = '%I:%M %p'
+  Time::DATE_FORMATS[:show_time] = '%l:%M %p'
 
   ['date', 'time'].each do |tagname, format|
     tag "reverbnation:shows:each:#{tagname}" do |tag|

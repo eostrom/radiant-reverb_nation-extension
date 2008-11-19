@@ -52,7 +52,7 @@ module ReverbNation
       <link>http://www.reverbnation.com/tincat</link>
       <description>Wine Affairs in San Jose, CA - </description>
       <pubDate>Mon, 03 Nov 2008 18:55:12 GMT</pubDate>
-      <show_price>free (but buy some wine)</show_price>
+      <show_price>free</show_price>
       <author>ReverbNation</author>
       <loc>San Jose, CA US</loc>
 
@@ -68,7 +68,7 @@ module ReverbNation
         <artist>Tin Cat</artist>
         <genre>Folk / Rock / Power Folk</genre>
       </artist>
-      <ticket_price>free (but buy some wine)</ticket_price>
+      <ticket_price>free</ticket_price>
       <tickets_url></tickets_url>
 
     </item>
