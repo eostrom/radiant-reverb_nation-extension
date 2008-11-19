@@ -28,6 +28,8 @@ end
 require 'context'
 require 'stump'
 
+require 'feeds' # simple test data
+
 # override stump's proxy code to account for optional parameters
 # TODO: submit a patch
 

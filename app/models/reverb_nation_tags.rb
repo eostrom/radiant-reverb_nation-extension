@@ -6,14 +6,18 @@ module ReverbNationTags
   include Radiant::Taggable
   
   SHOWS_FEED = "http://reverbnation.com/controller/rss/artist_shows_rss/"
-
+  
+  def shows_feed(id)
+    open(SHOWS_FEED + id) {|f| f.read}
+  end
+  
   tag 'reverbnation' do |tag|
     tag.locals.artist = tag.attr['artist']
     if tag.locals.artist.blank?
       raise ArgumentError, 'No artist specified for ReverbNation'
     end
     tag.locals.country = tag.attr['country']
-    tag.locals.feed = open(SHOWS_FEED + tag.locals.artist) {|f| f.read}
+    tag.locals.feed = shows_feed(tag.locals.artist)
     tag.locals.xml = Nokogiri::XML(tag.locals.feed)
     
     tag.expand
