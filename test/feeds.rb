@@ -54,10 +54,10 @@ module ReverbNation
       <pubDate>Mon, 03 Nov 2008 18:55:12 GMT</pubDate>
       <show_price>free</show_price>
       <author>ReverbNation</author>
-      <loc>San Jose, CA US</loc>
+      <loc>San Jose, SJ CR</loc>
 
       <venue>Wine Affairs</venue>
-      <address>1435 The Alameda, San Jose, CA, 95126, US</address>
+      <address>1435 The Alameda, San Jose, SJ, CR</address>
       <latitude>37.3332558</latitude>
       <longitude>-121.9144745</longitude>
       <georss:point>37.3332558 -121.9144745</georss:point>

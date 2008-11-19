@@ -60,6 +60,15 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
+    def tags_for_shows(tag, country = nil)
+      country_attr = "country='#{country}'" if country
+      [
+        "<r:reverbnation artist='tincat' #{country_attr}>",
+        "<r:shows:each><r:#{tag} />\n</r:shows:each>",
+        "</r:reverbnation>"
+      ].join
+    end
+    
     {
       'link' => "http://www.reverbnation.com/tincat\n" * 2,
       'date' => "Nov 15\nDec  3\n",
@@ -67,10 +76,10 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       'ticket_price' => "$3\nfree\n",
       'ticket_link' => "http://brownpapertickets.com/\n\n",
       'venue' => "Blue Rock Shoot\nWine Affairs\n",
-      'location' => "Saratoga, CA US\nSan Jose, CA US\n",
+      'location' => "Saratoga, CA US\nSan Jose, SJ CR\n",
       'address' => [
         "14523 Big Basin Way, Saratoga, CA, 95070, US\n" +
-        "1435 The Alameda, San Jose, CA, 95126, US\n"
+        "1435 The Alameda, San Jose, SJ, CR\n" # made-up address
       ].join,
       'latitude' => "37.2570076\n37.3332558\n",
       'longitude' => "-122.0343704\n-121.9144745\n",
@@ -78,24 +87,36 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     }.each do |tag, value|
       context "a reverbnation:shows:each:#{tag} tag" do
         it "renders the show's #{tag}" do
-          tags = [
-            "<r:reverbnation artist='tincat'>",
-            "<r:shows:each><r:#{tag} />\n</r:shows:each>",
-            "</r:reverbnation>"
-          ].join
-
           if value.is_a? Regexp
-            assert_render_match value, tags
+            assert_render_match value, tags_for_shows(tag)
 
           else
-            assert_renders value, tags
+            assert_renders value, tags_for_shows(tag)
           end
+        end
+      end
+    end
+
+    context "given a default country" do
+      context "a reverbnation:shows:each:location tag" do
+        it "omits the default country" do
+          value = "Saratoga, CA\nSan Jose, SJ CR\n"
+          assert_renders value, tags_for_shows('location', 'US')
+        end
+      end
+
+      context "a reverbnation:shows:each:address tag" do
+        it "omits the default country" do
+          value = [
+            "14523 Big Basin Way, Saratoga, CA, 95070\n" +
+            "1435 The Alameda, San Jose, SJ, CR\n" # made-up address
+          ].join
+          assert_renders value, tags_for_shows('address', 'US')
         end
       end
     end
   end
   
   # TODO: custom time/date formats
-  # TODO: omit default country in location
   # TODO: artists
 end

@@ -65,7 +65,6 @@ module ReverbNationTags
     'ticket_link' => 'tickets_url',
 
     'venue' => 'venue',
-    'address' => 'address',
     'latitude' => 'latitude',
     'longitude' => 'longitude',
     'georss:point' => 'georss:point',
@@ -77,13 +76,22 @@ module ReverbNationTags
     end
   end
   
-  tag "reverbnation:shows:each:location" do |tag|
-    location = tag.locals.item.xpath('loc').first.inner_html
+  def omit_country(tag, element)
+    value = tag.locals.item.xpath(element).first.inner_html
     country = tag.locals.country
     if country
-      location.sub!(/ #{country}$/, '').sub!(/, *$/, '')
+      value.sub(/,? #{country}$/, '').sub(/, *$/, '')
+    else
+      value
     end
-    location
+  end
+  
+  tag "reverbnation:shows:each:location" do |tag|
+    omit_country(tag, 'loc')
+  end
+  
+  tag "reverbnation:shows:each:address" do |tag|
+    omit_country(tag, 'address')
   end
   
   Time::DATE_FORMATS[:show_date] = '%b %e'
