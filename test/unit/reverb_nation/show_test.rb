@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../../test_helper'
 require 'nokogiri'
 
 class ReverbNation::ShowTest < Test::Unit::TestCase
+  include ::ReverbNation::Test::Feeds
+
   Show = ReverbNation::Show
   
   describe 'A Show' do
@@ -15,7 +17,7 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
   describe 'A valid Show' do
     before :each do
       @show = Show.new(
-        :item => Nokogiri::XML(FEED_CONTENTS).xpath('//item').first
+        :item => Nokogiri::XML(test_feed).xpath('//item').first
       )
     end
     
@@ -28,7 +30,7 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
     end
 
     it 'has a ticket link' do
-      assert_equal 'http://tickets.com/', @show.ticket_link
+      assert_equal 'http://brownpapertickets.com/', @show.ticket_link
     end
     
     it 'has a venue' do
@@ -55,49 +57,5 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
       ReverbNation::Artist.proxy! :new
       @show.artists
     end
-    
   end
-  
-  
-private
-
-  # TODO: switch to feeds.rb
-  
-  FEED_CONTENTS = <<END_FEED_CONTENTS
-<?xml version="1.0" encoding="UTF-8"?>
-  <channel>
-    <item>
-      <title>Sat Nov 15 08  07:30 PM</title>
-
-      <link>http://www.reverbnation.com/tincat</link>
-      <description>Blue Rock Shoot in Saratoga, CA - One of our favorite rooms to make music in, aside from Tom's mom's living room.</description>
-      <pubDate>Mon, 03 Nov 2008 18:53:23 GMT</pubDate>
-      <show_price>$3</show_price>
-      <author>ReverbNation</author>
-      <loc>Saratoga, CA US</loc>
-
-      <venue>Blue Rock Shoot</venue>
-      <address>14523 Big Basin Way, Saratoga, CA, 95070, US</address>
-      <latitude>37.2570076</latitude>
-      <longitude>-122.0343704</longitude>
-      <georss:point>37.2570076 -122.0343704</georss:point>
-      <note>A note.</note>
-
-      <artist>
-        <description>Tin Cat (Folk / Rock / Power Folk)</description>
-        <artist>Tin Cat</artist>
-        <genre>Folk / Rock / Power Folk</genre>
-      </artist>
-      <artist>
-        <description>The Toes</description>
-
-        <artist>The Toes</artist>
-      </artist>
-      <ticket_price>$3</ticket_price>
-      <tickets_url>http://tickets.com/</tickets_url>
-    </item>
-  </channel>
-</rss>
-END_FEED_CONTENTS
-
 end
