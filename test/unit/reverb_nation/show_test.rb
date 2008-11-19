@@ -4,7 +4,7 @@ require 'nokogiri'
 class ReverbNation::ShowTest < Test::Unit::TestCase
   Show = ReverbNation::Show
   
-  context 'A Show' do
+  describe 'A Show' do
     it 'requires an RSS item' do
       assert_raise ArgumentError do
         Show.new.venue
@@ -12,7 +12,7 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
     end
   end
   
-  context 'A valid Show' do
+  describe 'A valid Show' do
     before :each do
       @show = Show.new(
         :item => Nokogiri::XML(FEED_CONTENTS).xpath('//item').first
@@ -61,6 +61,8 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
   
 private
 
+  # TODO: switch to feeds.rb
+  
   FEED_CONTENTS = <<END_FEED_CONTENTS
 <?xml version="1.0" encoding="UTF-8"?>
   <channel>

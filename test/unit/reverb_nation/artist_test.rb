@@ -4,7 +4,7 @@ require 'nokogiri'
 class ReverbNation::ArtistTest < Test::Unit::TestCase
   Artist = ReverbNation::Artist
   
-  context 'An Artist' do
+  describe 'An Artist' do
     it 'requires an ID or an XML fragment to look up most data' do
       assert_raise ArgumentError do
         Artist.new.location
@@ -12,7 +12,7 @@ class ReverbNation::ArtistTest < Test::Unit::TestCase
     end
   end
   
-  context 'An Artist with an ID' do
+  describe 'An Artist with an ID' do
     before :each do
       @artist = Artist.new(:id => 'tincat')
       @artist.stub! :feed, :return => FEED_CONTENTS
@@ -52,7 +52,7 @@ class ReverbNation::ArtistTest < Test::Unit::TestCase
     end
   end
 
-  context 'An Artist with an XML fragment' do
+  describe 'An Artist with an XML fragment' do
     before :each do
       @artist = Artist.new(
         :xml => Nokogiri::XML(FEED_CONTENTS).xpath('//artist')[2]
@@ -77,6 +77,8 @@ class ReverbNation::ArtistTest < Test::Unit::TestCase
   end
 
 private
+
+  # TODO: switch to feeds.rb
 
   FEED_CONTENTS = <<END_FEED_CONTENTS
 <?xml version="1.0" encoding="UTF-8"?>

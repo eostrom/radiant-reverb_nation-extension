@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ReverbNationTagsTest < Test::Unit::TestCase
   test_helper :render
   
-  context 'on a page' do
+  context 'On a page' do
     include ::ReverbNation::Test::Feeds
     
     before :each do
@@ -11,7 +11,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       @page.stub! :shows_feed, :return => test_feed
     end
 
-    context 'a reverbnation tag' do
+    describe 'a reverbnation tag' do
       it 'raises an error if no artist is given' do
         assert_render_error /no artist/i, '<r:reverbnation />'
       end
@@ -24,7 +24,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       'label' => 'Unsigned',
       'link' => 'http://www.reverbnation.com/tincat'
     }.each do |tag, value|
-      context "a reverbnation:#{tag} tag" do
+      describe "a reverbnation:#{tag} tag" do
         it "renders the artist's #{tag}" do
           if value.is_a? Regexp
             assert_render_match value,
@@ -37,7 +37,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
-    context "a reverbnation:location tag" do
+    describe "a reverbnation:location tag" do
       it "renders the artist's location" do
         assert_renders 'San Jose, CA, US',
           "<r:reverbnation artist='tincat'><r:location /></r:reverbnation>"
@@ -51,7 +51,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
-    context "a reverbnation:shows:link tag" do
+    describe "a reverbnation:shows:link tag" do
       it "renders a URL for show listings" do
         assert_renders(
           "http://www.reverbnation.com/tincat/?current_active_tab=show_bills",
@@ -85,7 +85,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       'longitude' => "-122.0343704\n-121.9144745\n",
       'note' => "A note.\n\n"
     }.each do |tag, value|
-      context "a reverbnation:shows:each:#{tag} tag" do
+      describe "a reverbnation:shows:each:#{tag} tag" do
         it "renders the show's #{tag}" do
           if value.is_a? Regexp
             assert_render_match value, tags_for_shows(tag)
@@ -98,14 +98,14 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     end
 
     context "given a default country" do
-      context "a reverbnation:shows:each:location tag" do
+      describe "a reverbnation:shows:each:location tag" do
         it "omits the default country" do
           value = "Saratoga, CA\nSan Jose, SJ CR\n"
           assert_renders value, tags_for_shows('location', 'US')
         end
       end
 
-      context "a reverbnation:shows:each:address tag" do
+      describe "a reverbnation:shows:each:address tag" do
         it "omits the default country" do
           value = [
             "14523 Big Basin Way, Saratoga, CA, 95070\n" +
