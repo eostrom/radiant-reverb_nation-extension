@@ -17,7 +17,7 @@ class ReverbNation::ArtistTest < Test::Unit::TestCase
   describe 'An Artist with an ID' do
     before :each do
       @artist = Artist.new(:id => 'tincat')
-      @artist.stub! :feed, :return => test_feed
+      Artist.stub! :feed, :return => test_feed
     end
     
     it 'has a name' do

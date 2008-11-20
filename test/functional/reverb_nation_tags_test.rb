@@ -8,6 +8,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     
     before :each do
       @page = Page.new(:slug => 'test')
+      ReverbNation::Artist.stub! :feed, :return => test_feed
       @page.stub! :shows_feed, :return => test_feed
     end
 

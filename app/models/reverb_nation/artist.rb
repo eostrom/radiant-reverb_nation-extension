@@ -28,11 +28,15 @@ protected
     node.inner_html if node
   end
   
+  def self.feed(url) # we use a class method for ease of stubbing
+    open(url) #{|f| f.read}
+  end
+  
   SHOWS_FEED = "http://reverbnation.com/controller/rss/artist_shows_rss/"
   
   def feed
     raise ArgumentError if !@id
-    @feed ||= open(SHOWS_FEED + @id) {|f| f.read}
+    @feed ||= self.class.feed(SHOWS_FEED + @id)
   end
   
   def xml
