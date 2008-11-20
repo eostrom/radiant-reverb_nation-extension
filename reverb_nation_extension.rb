@@ -1,6 +1,8 @@
 # Uncomment this if you reference any of your controllers in activate
 # require_dependency 'application'
 
+require 'feed_tools'
+
 class ReverbNationExtension < Radiant::Extension
   version "1.0"
   description "Integrates concert listings from ReverbNation.com."
@@ -13,6 +15,9 @@ class ReverbNationExtension < Radiant::Extension
   def activate
     # admin.tabs.add "Reverb Nation", "/admin/reverb_nation", :after => "Layouts", :visibility => [:all]
     Page.send :include, ReverbNationTags
+
+    # TODO: make the caching mechanism configurable
+    FeedTools.configurations[:feed_cache] = 'FeedTools::DatabaseFeedCache'
   end
   
   def deactivate
