@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'nokogiri'
+require 'feed_tools'
 
 class ReverbNation::ShowTest < Test::Unit::TestCase
   include ::ReverbNation::Test::Feeds
@@ -16,8 +16,11 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
   
   describe 'A valid Show' do
     before :each do
+      feed = FeedTools::Feed.open(
+        File.join(test_feed_base, 'tincat')
+      )
       @show = Show.new(
-        :item => Nokogiri::XML(test_feed).xpath('//item').first
+        :item => feed.find_node('//item')
       )
     end
     

@@ -1,5 +1,3 @@
-require 'nokogiri'
-
 class ReverbNation::Show
   def initialize(options = {})
     @item = options[:item] || (raise ArgumentError)
@@ -17,7 +15,7 @@ class ReverbNation::Show
   def note; field('note'); end
   
   def artists
-    @item.xpath('artist').each do |xml|
+    REXML::XPath.match(@item, 'artist').map do |xml|
       ReverbNation::Artist.new(:xml => xml)
     end
   end
@@ -25,6 +23,7 @@ class ReverbNation::Show
 protected
   
   def field(name)
-    @item.xpath(name).first.inner_html
+    node = REXML::XPath.first(@item, name)
+    node.text if node
   end
 end

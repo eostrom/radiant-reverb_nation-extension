@@ -24,7 +24,7 @@ class Test::Unit::TestCase
   # Add more helper methods to be used by all extension tests here...
 
   def test_feed_base
-    File.dirname(__FILE__) + "/feeds"
+    "file:/" + File.expand_path('feeds', File.dirname(__FILE__))
   end
 end
 

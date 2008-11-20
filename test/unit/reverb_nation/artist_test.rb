@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'nokogiri'
 
 class ReverbNation::ArtistTest < Test::Unit::TestCase
   include ::ReverbNation::Test::Feeds
@@ -55,26 +54,26 @@ class ReverbNation::ArtistTest < Test::Unit::TestCase
   end
 
   describe 'An Artist with an XML fragment' do
+    def sub_artist(index)
+      feed = FeedTools::Feed.open(File.join(test_feed_base, 'tincat'))
+      feed.find_all_nodes('//item/artist')[index]
+    end
+    
     before :each do
-      @artist = Artist.new(
-        :xml => Nokogiri::XML(test_feed).xpath('//artist')[2]
-      )
+      @artist = Artist.new(:xml => sub_artist(1))
     end
     
     it 'has a name' do
       assert_equal 'The Toes', @artist.name
     end
     
-    it 'may have genres' do
-      @artist = Artist.new(
-        :xml => Nokogiri::XML(test_feed).xpath('//artist')[0]
-      )
-      assert_equal ['Folk', 'Rock', 'Power Folk'], @artist.genres
-    end
-    
     it 'may not have genres' do
       assert_equal [], @artist.genres
     end
     
+    it 'may have genres' do
+      @artist = Artist.new(:xml => sub_artist(0))
+      assert_equal ['Folk', 'Rock', 'Power Folk'], @artist.genres
+    end
   end
 end

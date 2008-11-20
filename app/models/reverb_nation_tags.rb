@@ -1,7 +1,3 @@
-require 'rss/2.0'
-require 'open-uri'
-require 'nokogiri'
-
 module ReverbNationTags
   include Radiant::Taggable
   

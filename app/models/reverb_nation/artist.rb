@@ -1,5 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
+require 'feed_tools'
 
 class ReverbNation::Artist
   def initialize(options = {})
@@ -16,7 +15,7 @@ class ReverbNation::Artist
   def branding; field('description'); end
   
   def shows
-    xml.xpath('item').map do |item|
+    REXML::XPath.match(xml, 'item').map do |item|
       ReverbNation::Show.new(:item => item)
     end
   end
@@ -24,8 +23,8 @@ class ReverbNation::Artist
 protected
   
   def field(name)
-    node = xml.xpath(name).first
-    node.inner_html if node
+    node = REXML::XPath.first(xml, name)
+    node.text if node
   end
   
   def self.feed_base
@@ -34,10 +33,10 @@ protected
   
   def feed
     raise ArgumentError if !@id
-    @feed ||= open(File.join(self.class.feed_base, @id)) {|f| f.read}
+    @feed ||= FeedTools::Feed.open(File.join(self.class.feed_base, @id))
   end
   
   def xml
-    @xml ||= Nokogiri::XML(feed).xpath('//channel')
+    @xml ||= feed.find_node('//channel')
   end
 end
