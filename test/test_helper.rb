@@ -22,7 +22,10 @@ class Test::Unit::TestCase
   self.fixture_path << File.dirname(__FILE__) + "/fixtures"
   
   # Add more helper methods to be used by all extension tests here...
-  
+
+  def test_feed_base
+    File.dirname(__FILE__) + "/feeds"
+  end
 end
 
 require 'context'
