@@ -5,10 +5,12 @@ class ReverbNation::Show
     @item = options[:item] || (raise ArgumentError)
   end
   
+  def datetime; DateTime.parse(field('title'), true); end
   def link; field('link'); end
   def ticket_price; field('ticket_price'); end
   def ticket_link; field('tickets_url'); end
   def venue; field('venue'); end
+  def location; field('loc'); end
   def address; field('address'); end
   def latitude; field('latitude').to_f; end
   def longitude; field('longitude').to_f; end

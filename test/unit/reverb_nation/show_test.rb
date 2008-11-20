@@ -21,6 +21,10 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
       )
     end
     
+    it 'has a datetime' do
+      assert_equal DateTime.parse('2008-11-15T19:30:00'), @show.datetime
+    end
+    
     it 'has a link' do
       assert_equal 'http://www.reverbnation.com/tincat', @show.link
     end
@@ -35,6 +39,10 @@ class ReverbNation::ShowTest < Test::Unit::TestCase
     
     it 'has a venue' do
       assert_equal 'Blue Rock Shoot', @show.venue
+    end
+    
+    it 'has a location' do
+      assert_equal 'Saratoga, CA US', @show.location
     end
     
     it 'has an address' do
