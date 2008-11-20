@@ -60,11 +60,19 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
-    def tags_for_shows(tag, country = nil)
-      country_attr = "country='#{country}'" if country
+    # I'm sure there's a library method that would do this for me.
+    def attrs_to_s(attrs)
+      (attrs || {}).map do |key, value|
+        "#{key}='#{value.to_xs}'"
+      end.join(' ')
+    end
+    
+    def tags_for_shows(tag, options = {})
+      attrs = attrs_to_s options[:attrs]
+      show_attrs = attrs_to_s options[:show_attrs]
       [
-        "<r:reverbnation artist='tincat' #{country_attr}>",
-        "<r:shows:each><r:#{tag} />\n</r:shows:each>",
+        "<r:reverbnation artist='tincat' #{attrs}>",
+        "<r:shows:each><r:#{tag} #{show_attrs}/>\n</r:shows:each>",
         "</r:reverbnation>"
       ].join
     end
@@ -98,10 +106,14 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     end
 
     context "given a default country" do
+      def default_country
+        {:attrs => {:country => 'US'}}
+      end
+      
       describe "a reverbnation:shows:each:location tag" do
         it "omits the default country" do
           value = "Saratoga, CA\nSan Jose, SJ CR\n"
-          assert_renders value, tags_for_shows('location', 'US')
+          assert_renders value, tags_for_shows('location', default_country)
         end
       end
 
@@ -111,12 +123,27 @@ class ReverbNationTagsTest < Test::Unit::TestCase
             "14523 Big Basin Way, Saratoga, CA, 95070\n" +
             "1435 The Alameda, San Jose, SJ, CR\n" # made-up address
           ].join
-          assert_renders value, tags_for_shows('address', 'US')
+          assert_renders value, tags_for_shows('address', default_country)
         end
+      end
+    end
+    
+    describe "a reverbnation:shows:each:date tag" do
+      it "accepts a custom format" do
+        assert_renders("2008-11-15\n2008-12-03\n",
+          tags_for_shows('date', :show_attrs => {:custom => '%Y-%m-%d'})
+        )
+      end
+    end
+    
+    describe "a reverbnation:shows:each:time tag" do
+      it "accepts a custom format" do
+        assert_renders("19\n19\n",
+          tags_for_shows('time', :show_attrs => {:custom => '%k'})
+        )
       end
     end
   end
   
-  # TODO: custom time/date formats
   # TODO: artists
 end
