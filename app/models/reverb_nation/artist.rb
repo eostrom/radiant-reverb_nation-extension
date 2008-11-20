@@ -28,7 +28,7 @@ protected
   end
   
   def self.feed_base
-    "http://reverbnation.com/controller/rss/artist_shows_rss/"
+    "http://www.reverbnation.com/controller/rss/artist_shows_rss/"
   end
   
   def feed
