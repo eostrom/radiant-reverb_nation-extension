@@ -13,8 +13,8 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     end
 
     describe 'a reverbnation tag' do
-      it 'raises an error if no artist is given' do
-        assert_render_error /no artist/i, '<r:reverbnation />'
+      it 'raises an error if no id is given' do
+        assert_render_error /no id/i, '<r:reverbnation />'
       end
     end
 
@@ -29,10 +29,10 @@ class ReverbNationTagsTest < Test::Unit::TestCase
         it "renders the artist's #{tag}" do
           if value.is_a? Regexp
             assert_render_match value,
-              "<r:reverbnation artist='tincat'><r:#{tag} /></r:reverbnation>"
+              "<r:reverbnation id='tincat'><r:#{tag} /></r:reverbnation>"
           else
             assert_renders value,
-              "<r:reverbnation artist='tincat'><r:#{tag} /></r:reverbnation>"
+              "<r:reverbnation id='tincat'><r:#{tag} /></r:reverbnation>"
           end
         end
       end
@@ -41,12 +41,12 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     describe "a reverbnation:location tag" do
       it "renders the artist's location" do
         assert_renders 'San Jose, CA, US',
-          "<r:reverbnation artist='tincat'><r:location /></r:reverbnation>"
+          "<r:reverbnation id='tincat'><r:location /></r:reverbnation>"
       end
 
       it "omits the artist's default country when rendering location" do
         assert_renders 'San Jose, CA',
-          "<r:reverbnation artist='tincat' country='US'>" +
+          "<r:reverbnation id='tincat' country='US'>" +
           "<r:location />" +
           "</r:reverbnation>"
       end
@@ -56,7 +56,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       it "renders a URL for show listings" do
         assert_renders(
           "http://www.reverbnation.com/tincat/?current_active_tab=show_bills",
-          "<r:reverbnation artist='tincat'><r:shows:link /></r:reverbnation>"
+          "<r:reverbnation id='tincat'><r:shows:link /></r:reverbnation>"
         )
       end
     end
@@ -72,7 +72,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       attrs = attrs_to_s options[:attrs]
       show_attrs = attrs_to_s options[:show_attrs]
       [
-        "<r:reverbnation artist='tincat' #{attrs}>",
+        "<r:reverbnation id='tincat' #{attrs}>",
         "<r:shows:each><r:#{tag} #{show_attrs}/>\n</r:shows:each>",
         "</r:reverbnation>"
       ].join

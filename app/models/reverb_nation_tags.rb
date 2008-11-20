@@ -7,17 +7,17 @@ module ReverbNationTags
   
   SHOWS_FEED = "http://reverbnation.com/controller/rss/artist_shows_rss/"
   
-  def shows_feed(id)
-    open(SHOWS_FEED + id) {|f| f.read}
+  def shows_feed(artist_id)
+    open(SHOWS_FEED + artist_id) {|f| f.read}
   end
   
   tag 'reverbnation' do |tag|
-    tag.locals.artist = tag.attr['artist']
-    if tag.locals.artist.blank?
-      raise ArgumentError, 'No artist specified for ReverbNation'
+    tag.locals.artist_id = tag.attr['id']
+    if tag.locals.artist_id.blank?
+      raise ArgumentError, 'No id specified for ReverbNation'
     end
     tag.locals.country = tag.attr['country']
-    tag.locals.feed = shows_feed(tag.locals.artist)
+    tag.locals.feed = shows_feed(tag.locals.artist_id)
     tag.locals.xml = Nokogiri::XML(tag.locals.feed)
     
     tag.expand
@@ -46,7 +46,7 @@ module ReverbNationTags
   end
   
   tag 'reverbnation:shows:link' do |tag|
-    "http://www.reverbnation.com/#{tag.locals.artist}/" +
+    "http://www.reverbnation.com/#{tag.locals.artist_id}/" +
       "?current_active_tab=show_bills"
   end
   
