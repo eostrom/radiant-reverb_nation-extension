@@ -4,7 +4,9 @@ Autotest.add_discovery do
   "rails"
 end
 
-# Work around bugs in ZenTest.  TODO: Submit patches.
+# Work around bugs in ZenTest.
+# TODO: Submit patch for the first bug.
+# (The second is patch #22922 on RubyForge).
 
 class Autotest
   def consolidate_failures(failed)
@@ -29,13 +31,15 @@ class Autotest
   end
 end
 
+# TODO: remove if the bug is fixed in Autotest
+
 class Autotest::Rails
   # Convert the pathname s to the name of class.
   def path_to_classname(s)
     sep = File::SEPARATOR
     f = s.sub(/^test#{sep}((unit|functional|integration|views|controllers|helpers)#{sep})?/, '').sub(/\.rb$/, '').split(sep)
     f = f.map { |path| path.split(/_/).map { |seg| seg.capitalize }.join }
-    # Add 'Test' to the class name, not the enclosing module names.
+    # Add 'Test' to the class name, but not to the enclosing module names.
     f.last.sub!(/(Test)?$/, 'Test')
     f.join('::')
   end

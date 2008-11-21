@@ -34,7 +34,7 @@ require 'stump'
 require 'test/feeds' # simple test data
 
 # override stump's proxy code to account for optional parameters
-# TODO: submit a patch
+# TODO: remove if the bug is fixed in stump
 
 class Object
   def proxy_existing_method(method, options = {}, &block)
