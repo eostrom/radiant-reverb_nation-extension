@@ -1,0 +1,10 @@
+# Radiant extensions that I've looked at put tag definitions in the
+# models directory, and tag tests in the functional directory.  So I
+# do too.
+
+Autotest.add_hook :initialize do |at|
+  at.add_mapping(/^app\/models\/(.*)_tags.rb$/) do |filename, _|
+    ["test/functional/#{m[1]}_tags_test.rb"]
+  end
+end
+
