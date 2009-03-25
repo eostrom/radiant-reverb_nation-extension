@@ -60,6 +60,28 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
+    describe "a reverbnation:shows:each tag" do
+      it "renders its content once for each show" do
+        assert_renders "Blue Rock Shoot\nWine Affairs\n",
+        [
+          "<r:reverbnation id='tincat'><r:shows:each>",
+          "<r:venue/>\n",
+          "</r:shows:each></r:reverbnation>"
+        ].join
+      end
+    end
+
+    describe "a reverbnation:shows:each tag with a limit attribute" do
+      it "limits the number of shows rendered" do
+        assert_renders "Blue Rock Shoot\n",
+        [
+          "<r:reverbnation id='tincat'><r:shows:each limit='1'>",
+          "<r:venue/>\n",
+          "</r:shows:each></r:reverbnation>"
+        ].join
+      end
+    end
+    
     # I'm sure there's a library method that would do this for me.
     def attrs_to_s(attrs)
       (attrs || {}).map do |key, value|

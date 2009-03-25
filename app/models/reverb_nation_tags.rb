@@ -36,7 +36,7 @@ module ReverbNationTags
   end
   
   tag 'reverbnation:shows:each' do |tag|
-    tag.locals.artist.shows.map do |show|
+    tag.locals.artist.shows[0..(tag.attr['limit'] || 0).to_i - 1].map do |show|
       tag.locals.show = show
       tag.expand
     end
