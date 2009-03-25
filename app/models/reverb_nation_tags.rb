@@ -12,10 +12,15 @@ module ReverbNationTags
     tag.expand
   end
   
+  # TODO: remove link tag
   ['name', 'members', 'label', 'link', 'branding']. each do |tagname|
     tag "reverbnation:#{tagname}" do |tag|
       tag.locals.artist.send(tagname)
     end
+  end
+  
+  tag "reverbnation:url" do |tag|
+    tag.locals.artist.link
   end
   
   tag "reverbnation:genres" do |tag|
@@ -30,6 +35,12 @@ module ReverbNationTags
     tag.expand
   end
   
+  tag 'reverbnation:shows:url' do |tag|
+    "http://www.reverbnation.com/#{tag.locals.artist_id}/" +
+      "?current_active_tab=show_bills"
+  end
+  
+  # TODO: remove link tag
   tag 'reverbnation:shows:link' do |tag|
     "http://www.reverbnation.com/#{tag.locals.artist_id}/" +
       "?current_active_tab=show_bills"
@@ -42,6 +53,7 @@ module ReverbNationTags
     end
   end
   
+  # TODO: remove link tag
   ['link', 'ticket_price', 'ticket_link',
     'venue', 'latitude', 'longitude', 'note'
   ].each do |tagname|
@@ -60,6 +72,10 @@ module ReverbNationTags
         value
       end
     end
+  end
+
+  tag "reverbnation:shows:each:url" do |tag|
+    tag.locals.show.link
   end
   
   Time::DATE_FORMATS[:show_date] = '%b %e'

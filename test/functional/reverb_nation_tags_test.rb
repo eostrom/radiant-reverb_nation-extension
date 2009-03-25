@@ -22,7 +22,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       'genres' => 'Folk / Rock / Power Folk',
       'members' => /Erik Ostrom/,
       'label' => 'Unsigned',
-      'link' => 'http://www.reverbnation.com/tincat'
+      'url' => 'http://www.reverbnation.com/tincat'
     }.each do |tag, value|
       describe "a reverbnation:#{tag} tag" do
         it "renders the artist's #{tag}" do
@@ -51,11 +51,11 @@ class ReverbNationTagsTest < Test::Unit::TestCase
       end
     end
 
-    describe "a reverbnation:shows:link tag" do
+    describe "a reverbnation:shows:url tag" do
       it "renders a URL for show listings" do
         assert_renders(
           "http://www.reverbnation.com/tincat/?current_active_tab=show_bills",
-          "<r:reverbnation id='tincat'><r:shows:link /></r:reverbnation>"
+          "<r:reverbnation id='tincat'><r:shows:url /></r:reverbnation>"
         )
       end
     end
@@ -100,7 +100,7 @@ class ReverbNationTagsTest < Test::Unit::TestCase
     end
     
     {
-      'link' => "http://www.reverbnation.com/tincat\n" * 2,
+      'url' => "http://www.reverbnation.com/tincat\n" * 2,
       'date' => "Nov 15\nDec  3\n",
       'time' => " 7:30 PM\n 7:30 PM\n",
       'ticket_price' => "$3\nfree\n",
@@ -119,7 +119,6 @@ class ReverbNationTagsTest < Test::Unit::TestCase
         it "renders the show's #{tag}" do
           if value.is_a? Regexp
             assert_render_match value, tags_for_shows(tag)
-
           else
             assert_renders value, tags_for_shows(tag)
           end
