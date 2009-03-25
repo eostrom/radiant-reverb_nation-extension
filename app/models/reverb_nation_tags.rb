@@ -12,8 +12,7 @@ module ReverbNationTags
     tag.expand
   end
   
-  # TODO: remove link tag
-  ['name', 'members', 'label', 'link', 'branding']. each do |tagname|
+  ['name', 'members', 'label', 'branding']. each do |tagname|
     tag "reverbnation:#{tagname}" do |tag|
       tag.locals.artist.send(tagname)
     end
@@ -40,12 +39,6 @@ module ReverbNationTags
       "?current_active_tab=show_bills"
   end
   
-  # TODO: remove link tag
-  tag 'reverbnation:shows:link' do |tag|
-    "http://www.reverbnation.com/#{tag.locals.artist_id}/" +
-      "?current_active_tab=show_bills"
-  end
-  
   tag 'reverbnation:shows:each' do |tag|
     tag.locals.artist.shows[0..(tag.attr['limit'] || 0).to_i - 1].map do |show|
       tag.locals.show = show
@@ -53,8 +46,7 @@ module ReverbNationTags
     end
   end
   
-  # TODO: remove link tag
-  ['link', 'ticket_price', 'ticket_link',
+  ['ticket_price', 'ticket_link',
     'venue', 'latitude', 'longitude', 'note'
   ].each do |tagname|
     tag "reverbnation:shows:each:#{tagname}" do |tag|
