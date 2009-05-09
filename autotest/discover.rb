@@ -4,9 +4,9 @@ Autotest.add_discovery do
   "rails"
 end
 
-# Work around bugs in ZenTest.
-# TODO: Submit patch for the first bug.
-# (The second is patch #22922 on RubyForge).
+# Work around issues with Autotest.
+
+# TODO: Remember what this is about, and submit a patch.
 
 class Autotest
   def consolidate_failures(failed)
@@ -31,7 +31,9 @@ class Autotest
   end
 end
 
-# TODO: remove if the bug is fixed in Autotest
+# Autotest doesn't follow the same conventions for test classes that Rails does.
+# There's a good reason for this (the Rails conventions don't adequately isolate
+# the tests from the tested code), but... well, I'm working around it anyway.
 
 class Autotest::Rails
   # Convert the pathname s to the name of class.

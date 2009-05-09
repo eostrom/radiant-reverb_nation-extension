@@ -30,8 +30,10 @@ require 'stump'
 
 require 'test/feeds' # simple test data
 
-# override stump's proxy code to account for optional parameters
-# TODO: remove if the bug is fixed in stump
+# Override stump's proxy code to account for optional parameters.
+# A patch has been submitted to fix this, and accepted.
+# 
+# TODO: Remove if an updated gem is released.
 
 class Object
   def proxy_existing_method(method, options = {}, &block)
