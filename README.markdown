@@ -1,4 +1,5 @@
-= ReverbNation
+ReverbNation Extension
+======================
 
 Integrates concert listings from ReverbNation.com.
 
